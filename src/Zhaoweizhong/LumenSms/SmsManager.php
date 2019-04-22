@@ -215,8 +215,8 @@ class SmsManager
      */
     protected function verifyCode()
     {
-        $repeatIfValid = config('laravel-sms.verifyCode.repeatIfValid',
-            config('laravel-sms.code.repeatIfValid', false));
+        $repeatIfValid = config('lumen-sms.verifyCode.repeatIfValid',
+            config('lumen-sms.code.repeatIfValid', false));
         if ($repeatIfValid) {
             $state = $this->retrieveState();
             if (!(empty($state)) && $state['deadline'] >= time() + 60) {
@@ -407,7 +407,7 @@ class SmsManager
      * @param string      $name
      * @param string|null $rule
      *
-     * @throws LaravelSmsException
+     * @throws LumenSmsException
      */
     public function storeRule($field, $name, $rule = null)
     {
@@ -425,7 +425,7 @@ class SmsManager
         }
         if (empty($name) || !is_string($name)) {
             $name = Util::pathOfUrl(URL::current(), function ($e) use ($field) {
-                throw new LaravelSmsException("Expected a name for the dynamic rule which belongs to field `$field`.");
+                throw new LumenSmsException("Expected a name for the dynamic rule which belongs to field `$field`.");
             });
         }
         $allRules = $this->retrieveRules($field);
@@ -524,7 +524,7 @@ class SmsManager
     protected function generateKey()
     {
         $split = '.';
-        $prefix = config('laravel-sms.storage.prefix', 'laravel_sms');
+        $prefix = config('lumen-sms.storage.prefix', 'lumen_sms');
         $args = func_get_args();
         array_unshift($args, $this->token);
         $args = array_filter($args, function ($value) {
@@ -547,7 +547,7 @@ class SmsManager
      */
     protected function generateSmsContent($code, $minutes)
     {
-        $content = config('laravel-sms.verifySmsContent') ?: config('laravel-sms.content');
+        $content = config('lumen-sms.verifySmsContent') ?: config('lumen-sms.content');
         if (is_string($content)) {
             $content = Util::unserializeClosure($content);
         }
@@ -567,7 +567,7 @@ class SmsManager
      */
     protected function generateTemplates($type)
     {
-        $templates = config('laravel-sms.templates');
+        $templates = config('lumen-sms.templates');
         if (is_string($templates)) {
             $templates = Util::unserializeClosure($templates);
         }
@@ -606,7 +606,7 @@ class SmsManager
      */
     protected function generateTemplateData($code, $minutes, $type)
     {
-        $tplData = config('laravel-sms.templateData') ?: config('laravel-sms.data');
+        $tplData = config('lumen-sms.templateData') ?: config('lumen-sms.data');
         if (is_string($tplData)) {
             $tplData = Util::unserializeClosure($tplData);
         }
@@ -640,19 +640,19 @@ class SmsManager
      */
     protected static function getFields()
     {
-        return array_keys(config('laravel-sms.validation', []));
+        return array_keys(config('lumen-sms.validation', []));
     }
 
     /**
      * 获取手机号的字段名
      *
-     * @throws LaravelSmsException
+     * @throws LumenSmsException
      *
      * @return string
      */
     protected static function getMobileField()
     {
-        $config = config('laravel-sms.validation', []);
+        $config = config('lumen-sms.validation', []);
         foreach ($config as $key => $value) {
             if (!is_array($value)) {
                 continue;
@@ -661,13 +661,13 @@ class SmsManager
                 return $key;
             }
         }
-        throw new LaravelSmsException('Not find the mobile field, please define it.');
+        throw new LumenSmsException('Not find the mobile field, please define it.');
     }
 
     /**
      * 获取存储器
      *
-     * @throws LaravelSmsException
+     * @throws LumenSmsException
      *
      * @return Storage
      */
@@ -678,11 +678,11 @@ class SmsManager
         }
         $className = self::getStorageClassName();
         if (!class_exists($className)) {
-            throw new LaravelSmsException("Generate storage failed, the class [$className] does not exists.");
+            throw new LumenSmsException("Generate storage failed, the class [$className] does not exists.");
         }
         $store = new $className();
         if (!($store instanceof Storage)) {
-            throw new LaravelSmsException("Generate storage failed, the class [$className] does not implement the interface [Zhaoweizhong\\Sms\\Storage].");
+            throw new LumenSmsException("Generate storage failed, the class [$className] does not implement the interface [Zhaoweizhong\\Sms\\Storage].");
         }
 
         return self::$storage = $store;
@@ -695,11 +695,11 @@ class SmsManager
      */
     protected static function getStorageClassName()
     {
-        $className = config('laravel-sms.storage.driver', null);
+        $className = config('lumen-sms.storage.driver', null);
         if ($className && is_string($className)) {
             return $className;
         }
-        $middleware = config('laravel-sms.route.middleware', null);
+        $middleware = config('lumen-sms.route.middleware', null);
         if ($middleware === 'web' || (is_array($middleware) && in_array('web', $middleware))) {
             return 'Zhaoweizhong\Sms\SessionStorage';
         }
@@ -758,17 +758,17 @@ class SmsManager
      *
      * @param string $field
      *
-     * @throws LaravelSmsException
+     * @throws LumenSmsException
      *
      * @return array
      */
     protected static function getValidationConfigByField($field)
     {
-        $data = config('laravel-sms.validation', []);
+        $data = config('lumen-sms.validation', []);
         if (isset($data[$field])) {
             return $data[$field];
         }
-        throw new LaravelSmsException("Not find the configuration information of field `$field`, please define it.");
+        throw new LumenSmsException("Not find the configuration information of field `$field`, please define it.");
     }
 
     /**
@@ -776,14 +776,14 @@ class SmsManager
      *
      * @param $name
      *
-     * @throws LaravelSmsException
+     * @throws LumenSmsException
      */
     protected static function validateFieldName($name)
     {
         $fields = self::getFields();
         if (!in_array($name, $fields)) {
             $names = implode(', ', $fields);
-            throw new LaravelSmsException("Illegal field `$name`, the field name must be one of $names.");
+            throw new LumenSmsException("Illegal field `$name`, the field name must be one of $names.");
         }
     }
 
@@ -819,8 +819,8 @@ class SmsManager
      */
     protected static function generateCode($length = null, $characters = null)
     {
-        $length = (int) ($length ?: config('laravel-sms.verifyCode.length',
-            config('laravel-sms.code.length', 5)));
+        $length = (int) ($length ?: config('lumen-sms.verifyCode.length',
+            config('lumen-sms.code.length', 5)));
         $characters = (string) ($characters ?: '0123456789');
         $charLength = strlen($characters);
         $randomString = '';
@@ -838,8 +838,8 @@ class SmsManager
      */
     protected static function getCodeValidMinutes()
     {
-        return (int) config('laravel-sms.verifyCode.validMinutes',
-            config('laravel-sms.code.validMinutes', 5));
+        return (int) config('lumen-sms.verifyCode.validMinutes',
+            config('lumen-sms.code.validMinutes', 5));
     }
 
     /**
@@ -851,7 +851,7 @@ class SmsManager
      */
     protected static function getNotifyMessage($name)
     {
-        $messages = config('laravel-sms.notifies', []);
+        $messages = config('lumen-sms.notifies', []);
         if (array_key_exists($name, $messages)) {
             return $messages["$name"];
         }
@@ -866,7 +866,7 @@ class SmsManager
      */
     protected static function getInterval()
     {
-        return (int) config('laravel-sms.interval', 60);
+        return (int) config('lumen-sms.interval', 60);
     }
 
     /**

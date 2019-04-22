@@ -6,7 +6,7 @@ use App\Jobs\Job;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
-use Zhaoweizhong\PhpSms\Sms;
+use Toplan\PhpSms\Sms;
 
 class SendReminderSms extends Job implements SelfHandling, ShouldQueue
 {
