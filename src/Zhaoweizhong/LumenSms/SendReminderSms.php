@@ -1,12 +1,12 @@
 <?php
 
-namespace Toplan\Sms;
+namespace Zhaoweizhong\Sms;
 
 use App\Jobs\Job;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
-use Toplan\PhpSms\Sms;
+use Zhaoweizhong\PhpSms\Sms;
 
 class SendReminderSms extends Job implements SelfHandling, ShouldQueue
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Toplan\Sms\Facades;
+namespace Zhaoweizhong\Sms\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
@@ -8,6 +8,6 @@ class SmsManager extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'Toplan\\Sms\\SmsManager';
+        return 'Zhaoweizhong\\Sms\\SmsManager';
     }
 }

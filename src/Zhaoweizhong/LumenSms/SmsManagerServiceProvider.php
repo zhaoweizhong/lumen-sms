@@ -1,6 +1,6 @@
 <?php
 
-namespace Toplan\Sms;
+namespace Zhaoweizhong\Sms;
 
 use DB;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -40,7 +40,7 @@ class SmsManagerServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../../config/laravel-sms.php', 'laravel-sms');
 
-        $this->app->singleton('Toplan\\Sms\\SmsManager', function ($app) {
+        $this->app->singleton('Zhaoweizhong\\Sms\\SmsManager', function ($app) {
             $token = $app->request->header('access-token', null);
             if (empty($token)) {
                 $token = $app->request->input('access_token', null);
@@ -56,7 +56,7 @@ class SmsManagerServiceProvider extends ServiceProvider
      */
     protected function phpSms()
     {
-        $queueJob = config('laravel-sms.queueJob', 'Toplan\Sms\SendReminderSms');
+        $queueJob = config('laravel-sms.queueJob', 'Zhaoweizhong\Sms\SendReminderSms');
         PhpSms::queue(false, function ($sms) use ($queueJob) {
             if (!class_exists($queueJob)) {
                 throw new LaravelSmsException("Class [$queueJob] does not exists.");

@@ -4,7 +4,7 @@
 return [
     /*
     |--------------------------------------------------------------------------
-    | 内置路由
+    | 内置路由：Lumen 下使用建议关闭此选项
     |--------------------------------------------------------------------------
     |
     | 如果是 web 应用建议 middleware 为 ['web', ...]
@@ -12,9 +12,9 @@ return [
     |
     */
     'route' => [
-        'enable'     => true,
-        'prefix'     => 'laravel-sms',
-        'middleware' => ['web'],
+        'enable'     => false,
+        // 'prefix'     => 'lumen-sms',
+        // 'middleware' => ['api'],
     ],
 
     /*
@@ -76,7 +76,7 @@ return [
     | 验证码短信通用内容
     |--------------------------------------------------------------------------
     |
-    | 如需缓存配置，则需使用 `Toplan\Sms\SmsManger::closure($closure)` 方法进行配置
+    | 如需缓存配置，则需使用 `Zhaoweizhong\Sms\SmsManger::closure($closure)` 方法进行配置
     |
     */
     'content' => function ($code, $minutes, $input) {
@@ -101,7 +101,7 @@ return [
     |           return $input['isRegister'] ? 'registerTempId' : 'commonId';
     |       }
     |
-    | 如需缓存配置，则需使用 `Toplan\Sms\SmsManger::closure($closure)` 方法对匿名函数进行配置
+    | 如需缓存配置，则需使用 `Zhaoweizhong\Sms\SmsManger::closure($closure)` 方法对匿名函数进行配置
     |
     */
     'templates' => [
@@ -125,7 +125,7 @@ return [
     |           //不返回任何值，那么hello将会从模版数据中移除 :)
     |       }
     |
-    | 如需缓存配置，则需使用 `Toplan\Sms\SmsManger::closure($closure)` 方法对匿名函数进行配置
+    | 如需缓存配置，则需使用 `Zhaoweizhong\Sms\SmsManger::closure($closure)` 方法对匿名函数进行配置
     |
     */
     'data' => [
@@ -143,23 +143,23 @@ return [
     |--------------------------------------------------------------------------
     |
     | driver:
-    | 存储方式,是一个实现了'Toplan\Sms\Storage'接口的类的类名,
-    | 内置可选的值有'Toplan\Sms\SessionStorage'和'Toplan\Sms\CacheStorage',
+    | 存储方式,是一个实现了'Zhaoweizhong\Sms\Storage'接口的类的类名,
+    | 内置可选的值有'Zhaoweizhong\Sms\SessionStorage'和'Zhaoweizhong\Sms\CacheStorage',
     | 如果不填写driver,那么系统会自动根据内置路由的属性(route)中middleware的配置值选择存储器driver:
-    | - 如果中间件含有'web',会选择使用'Toplan\Sms\SessionStorage'
-    | - 如果中间件含有'api',会选择使用'Toplan\Sms\CacheStorage'
+    | - 如果中间件含有'web',会选择使用'Zhaoweizhong\Sms\SessionStorage'
+    | - 如果中间件含有'api',会选择使用'Zhaoweizhong\Sms\CacheStorage'
     |
     | prefix:
     | 存储key的prefix
     |
     | 内置driver的个性化配置:
-    | - 在laravel项目的'config/session.php'文件中可以对'Toplan\Sms\SessionStorage'进行更多个性化设置
-    | - 在laravel项目的'config/cache.php'文件中可以对'Toplan\Sms\CacheStorage'进行更多个性化设置
+    | - 在lumen项目的'config/session.php'文件中可以对'Zhaoweizhong\Sms\SessionStorage'进行更多个性化设置
+    | - 在lumen项目的'config/cache.php'文件中可以对'Zhaoweizhong\Sms\CacheStorage'进行更多个性化设置
     |
     */
     'storage' => [
         'driver' => '',
-        'prefix' => 'laravel_sms',
+        'prefix' => 'lumen_sms',
     ],
 
     /*
@@ -167,7 +167,7 @@ return [
     | 是否数据库记录发送日志
     |--------------------------------------------------------------------------
     |
-    | 若需开启此功能,需要先生成一个内置的'laravel_sms'表
+    | 若需开启此功能,需要先生成一个内置的'lumen_sms'表
     | 运行'php artisan migrate'命令可以自动生成
     |
     */
@@ -179,7 +179,7 @@ return [
     |--------------------------------------------------------------------------
     |
     */
-    'queueJob' => 'Toplan\Sms\SendReminderSms',
+    'queueJob' => 'Zhaoweizhong\Sms\SendReminderSms',
 
     /*
     |--------------------------------------------------------------------------

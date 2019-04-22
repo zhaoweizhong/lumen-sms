@@ -1,6 +1,6 @@
 <?php
 
-namespace Toplan\Sms;
+namespace Zhaoweizhong\Sms;
 
 class SessionStorage implements Storage
 {

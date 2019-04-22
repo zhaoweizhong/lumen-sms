@@ -1,6 +1,6 @@
 <?php
 
-namespace Toplan\Sms;
+namespace Zhaoweizhong\Sms;
 
 use PhpSms;
 use URL;
@@ -165,9 +165,6 @@ class SmsManager
      */
     protected function getRealRuleByName($field, $ruleName)
     {
-        if (empty($ruleName) || !is_string($ruleName)) {
-            $ruleName = Util::pathOfUrl(URL::previous());
-        }
         if ($staticRule = $this->getStaticRule($field, $ruleName)) {
             $this->useRule($field, $ruleName);
 
@@ -685,7 +682,7 @@ class SmsManager
         }
         $store = new $className();
         if (!($store instanceof Storage)) {
-            throw new LaravelSmsException("Generate storage failed, the class [$className] does not implement the interface [Toplan\\Sms\\Storage].");
+            throw new LaravelSmsException("Generate storage failed, the class [$className] does not implement the interface [Zhaoweizhong\\Sms\\Storage].");
         }
 
         return self::$storage = $store;
@@ -704,13 +701,13 @@ class SmsManager
         }
         $middleware = config('laravel-sms.route.middleware', null);
         if ($middleware === 'web' || (is_array($middleware) && in_array('web', $middleware))) {
-            return 'Toplan\Sms\SessionStorage';
+            return 'Zhaoweizhong\Sms\SessionStorage';
         }
         if ($middleware === 'api' || (is_array($middleware) && in_array('api', $middleware))) {
-            return 'Toplan\Sms\CacheStorage';
+            return 'Zhaoweizhong\Sms\CacheStorage';
         }
 
-        return 'Toplan\Sms\SessionStorage';
+        return 'Zhaoweizhong\Sms\SessionStorage';
     }
 
     /**
